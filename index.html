@@ -1,49 +1,321 @@
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Portfolio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f4f4f9;
-      color: #222;
-      padding: 60px 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSL WebSocket Test Client</title>
+    <title>Aman Dipatuan — Embedded Systems Portfolio</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    h1 { color: #5b4bdb; }
+body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        #status {
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            line-height: 1.7;
+            color: #24292f;
+            background: #ffffff;
+}
+        #controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
 
-    section {
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 25px;
-      background: white;
-      border-radius: 12px;
-    }
+        .wrap {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+}
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 8px;
 
-    a { color: #5b4bdb; }
-  </style>
+        /* Header — name and profile summary */
+        header {
+            border-bottom: 1px solid #d8dee4;
+            padding-bottom: 28px;
+            margin-bottom: 36px;
+}
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+        header h1 { font-size: 2.1rem; margin-bottom: 4px; }
+        header .role { color: #57606a; font-size: 1.05rem; margin-bottom: 18px; }
+        header .summary { font-size: 1.05rem; }
+
+        section { margin-bottom: 40px; }
+        section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #0969da;
+}
+        #log {
+            border: 1px solid #ccc;
+            height: 250px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #fafafa;
+            font-family: monospace;
+
+        .about p { margin-bottom: 14px; }
+
+        .project { margin-bottom: 28px; }
+        .project h3 { font-size: 1.08rem; margin-bottom: 2px; }
+        .tech { color: #57606a; font-size: 0.9rem; margin-bottom: 8px; }
+        .project p { margin-bottom: 8px; }
+        .detail { font-size: 0.96rem; margin-bottom: 3px; }
+        .detail strong { font-weight: 600; }
+
+        .achievement { margin-bottom: 20px; }
+        .achievement h3 { font-size: 1.05rem; margin-bottom: 4px; }
+
+        .skill-group { margin-bottom: 16px; }
+        .skill-group h3 { font-size: 1rem; margin-bottom: 4px; color: #0969da; }
+
+        .contact-list { list-style: none; }
+        .contact-list li { margin-bottom: 10px; }
+        .contact-list a { color: #0969da; text-decoration: none; }
+        .contact-list a:hover { text-decoration: underline; }
+
+        footer {
+            border-top: 1px solid #d8dee4;
+            padding-top: 18px;
+            color: #57606a;
+            font-size: 0.9rem;
+}
+        .sent { color: #0066cc; }
+        .received { color: #008800; }
+        .system { color: #888888; font-style: italic; }
+</style>
 </head>
 <body>
-  <h1>Hello, I'm Aman!</h1>
-  <p>Welcome to my personal portfolio.</p>
+    <div class="wrap">
 
-  <section>
-    <h2>About Me</h2>
-    <p>I am a student learning web development.</p>
-  </section>
+    <h2>BSL WebSocket Client</h2>
+    <div id="status">Status: Connecting...</div>
+        <!-- Full Name and Profile Summary -->
+        <header>
+            <h1>Aman Dipatuan</h1>
+            <p class="role">BSCA 4th Year · Major in Embedded Systems · Mindanao State University — Iligan Institute of Technology</p>
+            <p class="summary">
+                Fourth-year computer application student who builds firmware in C++ for
+                STM32 boards with FreeRTOS and RT-Thread. I work close to the metal,
+                where every clock cycle is honest and every bug is physical.
+            </p>
+        </header>
 
-  <section>
-    <h2>My Projects</h2>
-    <p>Here are some projects I have created.</p>
-  </section>
+    <div id="controls">
+        <input type="text" id="msgInput" placeholder="Enter message..." disabled />
+        <button id="sendBtn" disabled>Send</button>
+    </div>
+        <main>
 
-  <section>
-    <h2>Contact Me</h2>
-    <p>Email: amandipatuan73@gmail.com</p>
-  </section>
+    <div id="log"></div>
+            <!-- Profile Summary (full) -->
+            <section class="about">
+                <h2>A Few Lines About Me</h2>
+                <p>
+                   As a fourth-year Computer Applications student specializing in Embedded Systems, 
+                   my perspective shifted somewhere between my first blinking LED and my first real-time temperature sensor:
+                   microcontrollers stopped being passive circuitry and became quiet, patient collaborators.
+                </p>
+                <p>
+                    I specialize in low-level systems engineering: developing C++ firmware, architecting deterministic RTOS environments,
+                    and integrating sensors for real-time physical telemetry. Working within hard constraints demands total
+                    discipline—where performance is measured cycle by cycle, debugging means observing physical behavior,
+                    and software must fit strictly within hardware allocations.
+                </p>
+                <p>
+                    My goal in embedded engineering is to build quiet, context-aware systems. Designing hardware
+                    capable of detecting and responding to physical shifts faster than human
+                    perception represents the true purpose of my work.
+                </p>
+            </section>
+
+    <script>
+        const wsUrl = "ws://localhost:8000";
+        const socket = new WebSocket(wsUrl);
+            <!-- Skills & Technologies -->
+            <section id="skills">
+                <h2>Skills &amp; Technologies</h2>
+
+        const statusDiv = document.getElementById("status");
+        const logDiv = document.getElementById("log");
+        const msgInput = document.getElementById("msgInput");
+        const sendBtn = document.getElementById("sendBtn");
+                <div class="skill-group">
+                    <h3>Languages</h3>
+                    <p>C++ (primary) · C · Python (supporting)</p>
+                </div>
+
+        function appendLog(text, className) {
+            const entry = document.createElement("div");
+            entry.className = className;
+            entry.textContent = text;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+                <div class="skill-group">
+                    <h3>Microcontrollers &amp; Boards</h3>
+                    <p>STM32 · Arduino · Arduino Nano · ESP32 · RT-Spark Dev Board</p>
+                </div>
+
+        socket.onopen = function() {
+            statusDiv.textContent = "Status: Connected to " + wsUrl;
+            statusDiv.style.backgroundColor = "#d4edda";
+            statusDiv.style.color = "#155724";
+            msgInput.disabled = false;
+            sendBtn.disabled = false;
+            appendLog("[System] Handshake complete. WebSocket ready.", "system");
+        };
+
+        socket.onmessage = function(event) {
+            appendLog("[Server] " + event.data, "received");
+        };
+
+        socket.onclose = function(event) {
+            statusDiv.textContent = "Status: Disconnected";
+            statusDiv.style.backgroundColor = "#f8d7da";
+            statusDiv.style.color = "#721c24";
+            msgInput.disabled = true;
+            sendBtn.disabled = true;
+            appendLog("[System] Connection closed by server.", "system");
+        };
+
+        socket.onerror = function(error) {
+            appendLog("[Error] WebSocket error occurred.", "system");
+        };
+
+        function sendMessage() {
+            const text = msgInput.value.trim();
+            if (text.length > 0 && socket.readyState === WebSocket.OPEN) {
+                socket.send(text);
+                appendLog("[Client] " + text, "sent");
+                msgInput.value = "";
+            }
+        }
+                <div class="skill-group">
+                    <h3>Real-Time Operating Systems</h3>
+                    <p>RT-Thread · FreeRTOS</p>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Peripherals &amp; Sensing</h3>
+                    <p>Temperature · Humidity · Motion · Light · Distance · HMI displays · Audio decoding</p>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Concepts I Work With</h3>
+                    <p>Task scheduling · Mutexes &amp; semaphores · Thread synchronization · Sensor fusion · Event-driven HMI · Bare-metal debugging · Resource-aware design · Version control (Git)</p>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects">
+                <h2>Projects</h2>
+
+                <div class="project">
+                    <h3>BCA182 — FreeRTOS Multisensor Room Monitor</h3>
+                    <p class="tech">FreeRTOS · C++ · Multisensor · STM32-class · Real-time</p>
+                    <p>
+                        A real-time room monitor running on FreeRTOS, juggling several sensors —
+                        temperature, humidity, motion, light — under a single scheduler. Each sensor runs
+                        as its own task with its own timing and priority, and the trick isn't reading them;
+                        the trick is making them cooperate without starving each other.
+                    </p>
+                    <p class="detail"><strong>Role:</strong> Firmware design, FreeRTOS task architecture, sensor integration.</p>
+                    <p class="detail"><strong>What I learned:</strong> Task prioritization, mutexes, and the cost of blocking calls inside an RTOS.</p>
+                    <p class="detail"><strong>Outcome:</strong> A stable multi-task monitor that reads several sensors concurrently without dropping cycles.</p>
+                </div>
+
+                <div class="project">
+                    <h3>Personal MP3 Player on STM32 RT-Thread (RT-Spark Dev Board)</h3>
+                    <p class="tech">STM32 · RT-Thread · RT-Spark · Audio · C++</p>
+                    <p>
+                        A personal MP3 player built on the RT-Spark development board, running RT-Thread
+                        as the operating system. Audio decoding, file handling, and user input all share
+                        one MCU — which means RT-Thread is doing what a good RTOS should: keeping the
+                        music playing while everything else politely waits its turn.
+                    </p>
+                    <p class="detail"><strong>Role:</strong> Audio pipeline, RT-Thread thread design, storage and playback flow.</p>
+                    <p class="detail"><strong>What I learned:</strong> Real-time audio buffering, thread synchronization, and resource-aware design on constrained hardware.</p>
+                    <p class="detail"><strong>Outcome:</strong> A working portable MP3 player on a single development board.</p>
+                </div>
+
+                <div class="project">
+                    <h3>Lucky 3 — Interactive HMI Game on RT-Thread</h3>
+                    <p class="tech">RT-Thread · HMI · Interactive · Game · C++</p>
+                    <p>
+                        An interactive human-machine interface game running on RT-Thread. Lucky 3 is the
+                        project I'm proudest of, because it took embedded systems out of the
+                        sensor-and-reading space and into something playful — a game that responds to a
+                        human, on a microcontroller, in real time.
+                    </p>
+                    <p class="detail"><strong>Role:</strong> Game logic, HMI design, RT-Thread integration.</p>
+                    <p class="detail"><strong>What I learned:</strong> Event-driven UI on an RTOS, responsive input handling, and making hardware feel friendly.</p>
+                    <p class="detail"><strong>Outcome:</strong> A shipped, presentable HMI game — and my first taste of embedded UX.</p>
+                </div>
+            </section>
+
+        sendBtn.addEventListener("click", sendMessage);
+        msgInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+            <!-- Achievements -->
+            <section id="achievements">
+                <h2>Achievements</h2>
+
+                <div class="achievement">
+                    <h3>Participation — RT-Thread Based Technologies</h3>
+                    <p>
+                          Selected to participate in the RT-Thread Based Technologies introduction to
+                          open-source real-time systems — a program focused on the RT-Thread open-source
+                          RTOS and its growing ecosystem in the embedded world.
+                    </p>
+                </div>
+
+                <div class="achievement">
+                    <h3>Presentation — Space Dodger: High-Performance LVGL Game on HMI-Board Game on RT-Thread</h3>
+                    <p>
+                          Showcased Space Dodger, an embedded HMI game built to demonstrate RT-Thread's real-time UI rendering
+                          , event handling, and state management capabilities on a single board.
+                          Presenting this system on an industry stage transformed my perspective,
+                          marking the transition from academic study to professional systems engineering
+                    </p>
+                    <p>
+                        From blinking an LED to presenting an HMI game built on a real open-source RTOS —
+                        that, in one sentence, has been the arc of the last four years.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Contact Information & Social Links -->
+            <section id="contact">
+                <h2>Contact Information &amp; Social Links</h2>
+                <ul class="contact-list">
+                    <li>Email: <a href="mailto:aman.dipatuan@g.msuiit.edu.ph">aman.dipatuan@g.msuiit.edu.ph</a></li>
+                    <li>GitHub: <a href="https://github.com/amandipatuan-collab" target="_blank" rel="noopener">github.com/amandipatuan-collab</a></li>
+                    <li>Field: Embedded Systems</li>
+                </ul>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Aman Dipatuan · Served by Bonezegei Scripting Language (BSL) v1.3.3</p>
+        </footer>
+
+    </div>
 </body>
 </html>
